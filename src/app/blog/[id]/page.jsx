@@ -3,6 +3,7 @@ import styles from "./page.module.css";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+// Fetching Data
 async function getData(id) {
   const res = await fetch(`http://localhost:3000/api/posts/${id}`, {
     cache: "no-store",
@@ -13,6 +14,15 @@ async function getData(id) {
   }
 
   return res.json();
+}
+
+// Dynamic Metadata
+export async function generateMetadata({ params }) {
+  const post = await getData(params.id);
+  return {
+    title: post.title,
+    description: post.desc,
+  };
 }
 
 const BlogPost = async ({ params }) => {
